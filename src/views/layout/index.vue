@@ -25,7 +25,9 @@
                 </div>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>个人设置</el-dropdown-item>
-                    <el-dropdown-item>用户退出</el-dropdown-item>
+                    <el-dropdown-item
+                        @click.native="onLogOut"
+                    >用户退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </el-header>
@@ -39,7 +41,7 @@
 <script>
 import AppAside from './components/aside'
 // import { getUserProfile } from '@/api/user'
-import { setItem, getItem } from '@/utils/storage'
+import { setItem, getItem, removeItem } from '@/utils/storage'
 
 export default {
   name: 'LayoutIndex',
@@ -78,6 +80,28 @@ export default {
         const user = getItem('user')
         console.log(user)
         this.user = user
+      },
+      onLogOut () {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            // 将用户的登录状态清除
+          removeItem('user')
+
+           // 跳转到登录页面
+           this.$router.push('/login')
+            this.$message({
+                type: 'success',
+                message: '退出成功!'
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
       }
   }
 }

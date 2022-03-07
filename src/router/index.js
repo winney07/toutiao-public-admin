@@ -18,6 +18,11 @@ const routes = [
         path: '',
         name: 'home',
         component: () => import('@/views/home/')
+      },
+      {
+        path: '/article',
+        name: 'article',
+        component: () => import('@/views/article/')
       }
     ]
   }
@@ -25,6 +30,11 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // ÔÊÐíÍ¨¹ý
+  next()
 })
 
 export default router
